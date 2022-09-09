@@ -76,13 +76,23 @@ speed() {
     speed_test '40879' 'Montreal, CA'
     speed_test '24215' 'Paris, FR'
     speed_test '28922' 'Amsterdam, NL'
-    speed_test '24447' 'Shanghai, CN'
-    speed_test '26352' 'Nanjing, CN'
-    speed_test '27594' 'Guangzhou, CN'
     speed_test '32155' 'Hongkong, CN'
     speed_test '6527'  'Seoul, KR'
     speed_test '7311'  'Singapore, SG'
     speed_test '21569' 'Tokyo, JP'
+    speed_test '3633'  'Shanghai 5G  CT'
+    speed_test '27377' 'Beijing 5G   CT'
+    speed_test '26352' 'Nanjing 5G   CT'
+    speed_test '17145' 'Hefei 5G     CT'
+	speed_test '27594' 'Guangzhou 5G CT'
+	speed_test '27154' 'TianJin 5G   CU'
+	speed_test '24447' 'Shanghai 5G  CU'
+	speed_test '26678' 'Guangzhou 5G CU'
+	speed_test '17184' 'Tianjin 5G   CM'
+	speed_test '26850' 'Wuxi 5G      CM'
+	speed_test '27249' 'Nanjing 5G   CM'
+	speed_test '26404' 'Hefei 5G     CM'
+	speed_test '28491' 'Changsha 5G  CM'
 }
 
 io_test() {
@@ -179,7 +189,7 @@ ipv4_info() {
     if [[ -n "$org" ]]; then
         echo " Organization       : $(_blue "$org")"
     fi
-    if [[ -n "$city" && -n "country" ]]; then
+    if [[ -n "$city" && -n "$country" ]]; then
         echo " Location           : $(_blue "$city / $country")"
     fi
     if [[ -n "$region" ]]; then
@@ -321,11 +331,11 @@ print_io_test() {
         io3=$( io_test ${writemb} )
         echo " I/O Speed(3rd run) : $(_yellow "$io3")"
         ioraw1=$( echo $io1 | awk 'NR==1 {print $1}' )
-        [ "`echo $io1 | awk 'NR==1 {print $2}'`" == "GB/s" ] && ioraw1=$( awk 'BEGIN{print '$ioraw1' * 1024}' )
+        [ "$(echo $io1 | awk 'NR==1 {print $2}')" == "GB/s" ] && ioraw1=$( awk 'BEGIN{print '$ioraw1' * 1024}' )
         ioraw2=$( echo $io2 | awk 'NR==1 {print $1}' )
-        [ "`echo $io2 | awk 'NR==1 {print $2}'`" == "GB/s" ] && ioraw2=$( awk 'BEGIN{print '$ioraw2' * 1024}' )
+        [ "$(echo $io2 | awk 'NR==1 {print $2}')" == "GB/s" ] && ioraw2=$( awk 'BEGIN{print '$ioraw2' * 1024}' )
         ioraw3=$( echo $io3 | awk 'NR==1 {print $1}' )
-        [ "`echo $io3 | awk 'NR==1 {print $2}'`" == "GB/s" ] && ioraw3=$( awk 'BEGIN{print '$ioraw3' * 1024}' )
+        [ "$(echo $io3 | awk 'NR==1 {print $2}')" == "GB/s" ] && ioraw3=$( awk 'BEGIN{print '$ioraw3' * 1024}' )
         ioall=$( awk 'BEGIN{print '$ioraw1' + '$ioraw2' + '$ioraw3'}' )
         ioavg=$( awk 'BEGIN{printf "%.1f", '$ioall' / 3}' )
         echo " I/O Speed(average) : $(_yellow "$ioavg MB/s")"
